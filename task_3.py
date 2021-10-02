@@ -11,7 +11,7 @@ class Letter:
     def all_neighbor(self, letters):
         self.neighbors.extend(letters)
 
-    def need_neighbor(self, need):
+    def need_neighbors(self, need):
         """
 
         :return: right neighbor
@@ -21,8 +21,6 @@ class Letter:
             if need == k.value:
                 output.append(k)
         return output
-
-
 
 
 class Board:
@@ -39,11 +37,11 @@ class Board:
             if i - 1 >= 0:
                 neighbors.append(self.letters[i - 1])
             if i - self.n >= 0:
-                neighbors.append(self.letters[i - 4])
-            if i + 1 < 12:
+                neighbors.append(self.letters[i - self.n])
+            if i + 1 < self.m * self.n:
                 neighbors.append(self.letters[i + 1])
             if i + self.n < self.m * self.n:
-                neighbors.append(self.letters[i + 4])
+                neighbors.append(self.letters[i + self.n])
 
             self.letters[i].all_neighbor(neighbors)
 
@@ -58,8 +56,30 @@ class Board:
                     return False
         else:
             for letter in self.letters:
-                if letter.value == need_word[0]:
-                    need_word = need_word[1:]
+                i = 0  # Счётчик букв в нужном слове
+                if letter.value == need_word[i]:
+                    answer = []
+                    seen = set()
+                    stack = list()
+                    stack.append(letter)
+                    while stack:
+                        node = stack.pop()
+                        answer.append(node.value)
+                        if len(answer) == len(need_word):
+                            break
+                        i = len(answer)
+                        if node in seen:
+                            continue
+                        else:
+                            seen.add(node)
+
+                        m = node.need_neighbors(need_word[i])
+
+                        for need_neighbor in m:
+                            stack.append(need_neighbor)
+                    return answer == need_word
+
+                    """need_word = need_word[1:]
                     seen = set()
                     seen.add(letter)
                     start = letter
@@ -72,23 +92,26 @@ class Board:
 
 
                     else:
-                        return False
+                        return False"""
 
 
 def main():
     board = [["A", "B", "C", "E"],
              ["S", "F", "C", "S"],
              ["A", "D", "E", "E"],
+             ["A", "D", "E", "E"],
+             ["A", "D", "E", "E"],
+             ["A", "D", "E", "E"],
+             ["A", "D", "E", "E"],
              ]
     m = len(board)
     n = len(board[0])
-    input_word = "ABCCED"
+    input_word = "EEEEEEEEEE"
     word = list(input_word)
     b = Board(board, m, n)
-    b.check(word)
-
-
-
+    print(b.letters)
+    print(b.letters[19].neighbors)
+    print(b.check(word))
 
     """for i in letters:
         if i.value == word[0]:
