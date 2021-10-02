@@ -79,21 +79,6 @@ class Board:
                             stack.append(need_neighbor)
                     return answer == need_word
 
-                    """need_word = need_word[1:]
-                    seen = set()
-                    seen.add(letter)
-                    start = letter
-                    need_letter = need_word[0]
-                    del need_word[0]
-                    neighbors = []
-                    neighbors.extend(letter.need_neighbor(need_letter))
-                    while neighbors:
-                        start = neighbors.pop()
-
-
-                    else:
-                        return False"""
-
 
 def main():
     board = [["A", "B", "C", "E"],
