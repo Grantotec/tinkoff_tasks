@@ -42,11 +42,10 @@ class Board:
                 neighbors.append(self.letters[i - 4])
             if i + 1 < 12:
                 neighbors.append(self.letters[i + 1])
-            if i + self.n < 12:
+            if i + self.n < self.m * self.n:
                 neighbors.append(self.letters[i + 4])
 
             self.letters[i].all_neighbor(neighbors)
-
 
     def check(self, need_word):
         if len(need_word) == 0:
@@ -55,20 +54,25 @@ class Board:
             for letter in self.letters:
                 if letter.value == need_word:
                     return True
+                else:
+                    return False
+        else:
+            for letter in self.letters:
+                if letter.value == need_word[0]:
+                    need_word = need_word[1:]
+                    seen = set()
+                    seen.add(letter)
+                    start = letter
+                    need_letter = need_word[0]
+                    del need_word[0]
+                    neighbors = []
+                    neighbors.extend(letter.need_neighbor(need_letter))
+                    while neighbors:
+                        start = neighbors.pop()
 
-        for letter in self.letters:
-            if letter.value == need_word[0]:
-                need_word = need_word[1:]
-                seen = set()
-                seen.add(letter)
-                start = letter
-                need_letter = need_word[0]
 
-
-
-
-
-
+                    else:
+                        return False
 
 
 def main():
@@ -78,7 +82,8 @@ def main():
              ]
     m = len(board)
     n = len(board[0])
-    word = "ABCCED"
+    input_word = "ABCCED"
+    word = list(input_word)
     b = Board(board, m, n)
     b.check(word)
 
