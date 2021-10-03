@@ -24,26 +24,27 @@ class Letter:
 
 
 class Board:
-    def __init__(self, values, lines, rows):
-        self.m = lines
-        self.n = rows
+    def __init__(self, values, m, n):
+        self.m = m
+        self.n = n
         self.letters = []
         for line in values:
             for letter in line:
                 self.letters.append(Letter(letter))
 
-        for i in range(len(self.letters)):
-            neighbors = []
-            if i - 1 >= 0:
-                neighbors.append(self.letters[i - 1])
-            if i - self.n >= 0:
-                neighbors.append(self.letters[i - self.n])
-            if i + 1 < self.m * self.n:
-                neighbors.append(self.letters[i + 1])
-            if i + self.n < self.m * self.n:
-                neighbors.append(self.letters[i + self.n])
+        for i in range(self.m):
+            for j in range(self.n):
+                neighbors = []
+                if j - 1 >= 0:
+                    neighbors.append(self.letters[i * self.n + j - 1])
+                if i - 1 >= self.m:
+                    neighbors.append(self.letters[i * self.n + j - self.n])
+                if j + 1 < self.n:
+                    neighbors.append(self.letters[i * self.n + j + 1])
+                if i + 1 < self.m:
+                    neighbors.append(self.letters[i * self.n + j + self.n])
 
-            self.letters[i].all_neighbor(neighbors)
+                self.letters[i].all_neighbor(neighbors)
 
     def check(self, need_word):
         if len(need_word) == 0:
@@ -82,21 +83,18 @@ class Board:
 
 def main():
     board = [["A", "B", "C", "E"],
-             ["S", "F", "C", "S"],
-             ["A", "D", "E", "E"],
-             ["A", "D", "E", "E"],
-             ["A", "D", "E", "E"],
-             ["A", "D", "E", "E"],
+             ["S", "F", "C", "S"], # (i * n + j)
              ["A", "D", "E", "E"],
              ]
     m = len(board)
     n = len(board[0])
-    input_word = "EEEEEEEEEE"
+    input_word = "ABCCED"
     word = list(input_word)
     b = Board(board, m, n)
-    print(b.letters)
-    print(b.letters[19].neighbors)
     print(b.check(word))
+    for i in b.letters:
+        print(i.neighbors)
+
 
     """for i in letters:
         if i.value == word[0]:
