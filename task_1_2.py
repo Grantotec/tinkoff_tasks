@@ -38,24 +38,6 @@ class Graph:
             output.extend(self.dfs1_help(node, seen))
         return output
 
-    def dfs2(self) -> list[Node]:
-        """
-        Обход в глубину с помощью цикла
-        :return: Порядок обхода узлов
-        """
-        output = []
-        stack = list()
-        stack.append(self.root)
-        while stack:
-            node = stack.pop()
-            if node in output:
-                continue
-
-            for out_node in node.outbound[::-1]:
-                stack.append(out_node)
-            output.append(node)
-        return output
-
     def bfs(self) -> list[Node]:
         """
         Обход в ширину
@@ -107,7 +89,6 @@ def main():
     g = make_graph(data)
 
     print(g.dfs1())
-    print(g.dfs2())
     print(g.bfs())
 
 

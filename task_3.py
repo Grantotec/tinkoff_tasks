@@ -91,19 +91,14 @@ class Board:
 
 def main():
     board = [["A", "B", "C", "E"],
-             ["S", "F", "C", "S"],  # (i * n + j)
+             ["S", "F", "C", "S"],
              ["A", "D", "E", "E"],
-             ["A", "C", "A", "B"],
-             ["A", "E", "D", "C"],
-             ["A", "D", "E", "F"],
-             ["A", "D", "E", "G"],
              ]
     m = len(board)
     n = len(board[0])
-    word = "ABCDEFG"
+    word = "ABCCED"
     b = Board(board, m, n)
     print(b.check(word))
-    for i in b.letters:
-        print(i, i.neighbors)
+
 
 main()
