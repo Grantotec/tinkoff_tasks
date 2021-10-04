@@ -35,16 +35,17 @@ class Board:
         for i in range(self.m):
             for j in range(self.n):
                 neighbors = []
+                k = i * self.n + j
                 if j - 1 >= 0:
-                    neighbors.append(self.letters[i * self.n + j - 1])
+                    neighbors.append(self.letters[k - 1])
                 if i - 1 >= 0:
-                    neighbors.append(self.letters[i * self.n + j - self.n])
+                    neighbors.append(self.letters[k - self.n])
                 if j + 1 < self.n:
-                    neighbors.append(self.letters[i * self.n + j + 1])
+                    neighbors.append(self.letters[k + 1])
                 if i + 1 < self.m:
-                    neighbors.append(self.letters[i * self.n + j + self.n])
+                    neighbors.append(self.letters[k + self.n])
 
-                self.letters[i * self.n + j].all_neighbor(neighbors)
+                self.letters[k].all_neighbor(neighbors)
 
     def check(self, need_word):
         if len(need_word) == 0:
@@ -56,6 +57,7 @@ class Board:
                 else:
                     return False
         else:
+            answers = list()
             for letter in self.letters:
                 i = 0  # Счётчик букв в нужном слове
                 if letter.value == need_word[i]:
@@ -78,25 +80,30 @@ class Board:
 
                         for need_neighbor in m:
                             stack.append(need_neighbor)
-                    return answer == need_word
+                    answers.append(answer)
+
+            for ans in answers:
+                s = ""
+                if s.join(ans) == need_word:
+                    return True
+            return False
 
 
 def main():
     board = [["A", "B", "C", "E"],
              ["S", "F", "C", "S"],  # (i * n + j)
              ["A", "D", "E", "E"],
-             ["A", "D", "E", "E"],
-             ["A", "D", "E", "E"],
-             ["A", "D", "E", "E"],
-             ["A", "D", "E", "E"],
+             ["A", "C", "A", "B"],
+             ["A", "E", "D", "C"],
+             ["A", "D", "E", "F"],
+             ["A", "D", "E", "G"],
              ]
     m = len(board)
     n = len(board[0])
-    input_word = "EEEEEEEEEE"
-    word = list(input_word)
+    word = "ABCDEFG"
     b = Board(board, m, n)
     print(b.check(word))
     for i in b.letters:
-        print(i.neighbors)
+        print(i, i.neighbors)
 
 main()
